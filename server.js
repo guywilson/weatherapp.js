@@ -5,6 +5,8 @@ const db = require('./db');
 
 const app = express();
 
+const port = process.env.PORT;
+
 var timestamp = '1900-01-01 00:00:00';
 
 var doSave = 'false';
@@ -218,6 +220,6 @@ app.post('/weather/api/max-tph', function(req, res) {
 	res.json(["OK", ""]);
 })
 
-app.listen(3000, function () {
-  console.log('Weather app listening on port 3000!');
+app.listen(port, function () {
+  console.log('Weather app listening on port: ' + port);
 })
