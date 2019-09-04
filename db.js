@@ -2,12 +2,10 @@ const Postgres = require('pg');
 
 const Pool = Postgres.Pool;
 const pool = new Pool({
-    user: 'guy',
-    host: 'localhost',
-    database: 'weather',
-    password: 'password'
-});
-
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+  });
+  
 function getChartData_24h(callback) {
     pool.query('SELECT * FROM tph WHERE type = \'AVG\' ORDER BY ts DESC LIMIT 72', (error, results) => {
         if (error) {

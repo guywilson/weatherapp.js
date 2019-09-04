@@ -34,6 +34,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 
+db.initialiseDB();
+
 /*
 ** Render landing page...
 */
