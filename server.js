@@ -28,11 +28,14 @@ var chartTempTitle = 'Temperature last 24h';
 var chartPresTitle = 'Air Pressure last 24h';
 var chartHumiTitle = 'Humidity last 24h';
 
-app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(express.static('public'));
 app.set('view engine', 'ejs');
+
+app.listen(port, function () {
+	console.log('Weather app listening on port: ' + port);
+})
 
 /*
 ** Render landing page...
@@ -220,8 +223,4 @@ app.post('/weather/api/max-tph', function(req, res) {
 }
 	 	
 	res.json(["OK", ""]);
-})
-
-app.listen(port, function () {
-  console.log('Weather app listening on port: ' + port);
 })
