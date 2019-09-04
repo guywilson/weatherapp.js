@@ -179,7 +179,7 @@ app.post('/weather/api/avg-tph', function(req, res) {
 	avgPressure = req.body.pressure;
 	avgHumidity = req.body.humidity;
 
-	console.log('Got AVG TPH data ' + req);
+	console.log('Got AVG TPH data ' + req.body);
 
 	if (doSave == 'true') {
 		db.putChartData(timestamp, 'AVG', avgTemperature, avgPressure, avgHumidity);		
