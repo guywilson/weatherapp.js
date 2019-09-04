@@ -5,7 +5,7 @@ const db = require('./db');
 
 const app = express();
 
-const port = process.env.PORT;
+const port = process.env.PORT | 3000;
 
 var timestamp = '1900-01-01 00:00:00';
 
@@ -182,7 +182,7 @@ app.post('/weather/api/avg-tph', function(req, res) {
 	avgPressure = req.body.pressure;
 	avgHumidity = req.body.humidity;
 
-	console.log('Got AVG TPH data ' + req.body);
+	console.log('Got AVG TPH data ' + JSON.stringify(req.body));
 
 	if (doSave == 'true') {
 		db.putChartData(timestamp, 'AVG', avgTemperature, avgPressure, avgHumidity);		
