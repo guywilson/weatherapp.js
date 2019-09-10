@@ -234,7 +234,7 @@ app.post('/weather/api/max-tph', function(req, res) {
 })
 
 /*
-** Handle API post for max TPH data...
+** Handle API post for weather controller version...
 */
 app.post('/weather/api/version', function(req, res) {
 	wctlBuildDate = req.body.buildDate;
