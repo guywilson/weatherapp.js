@@ -100,5 +100,10 @@
 				</tr>
 			</table>
 		</div>
+		<div style="position: absolute; bottom: 5px">
+			<% if(buildVersion !== null) { %>
+				<p>Weather Controller version: <%= buildVersion %>; build date: [<%= buildDate %>]</p>
+			<% } %>
+		</div>
 	</body>
 </html>

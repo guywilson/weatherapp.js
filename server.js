@@ -28,6 +28,9 @@ var chartTempTitle = 'Temperature last 24h';
 var chartPresTitle = 'Air Pressure last 24h';
 var chartHumiTitle = 'Humidity last 24h';
 
+var wctlBuildVersion = null;
+var wctlBuildDate = null;
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -52,7 +55,9 @@ app.get('/weather', function (req, res) {
 			 	minHumidity: minHumidity,
 			 	maxTemperature: maxTemperature,
 			 	maxPressure: maxPressure,
-			 	maxHumidity: maxHumidity
+				maxHumidity: maxHumidity,
+				buildVersion: wctlBuildVersion,
+				buildDate: wctlBuildDate
 			});
 })
 
@@ -182,7 +187,10 @@ app.post('/weather/api/avg-tph', function(req, res) {
 	avgPressure = req.body.pressure;
 	avgHumidity = req.body.humidity;
 
-	console.log('Got AVG TPH data ' + JSON.stringify(req.body));
+	/*
+	** Turn off saving when running locally...
+	*/
+	//doSave = 'false';
 
 	if (doSave == 'true') {
 		db.putChartData(timestamp, 'AVG', avgTemperature, avgPressure, avgHumidity);		
@@ -221,6 +229,16 @@ app.post('/weather/api/max-tph', function(req, res) {
 	if (doSave == 'true') {
 		db.putChartData(timestamp, 'MAX', maxTemperature, maxPressure, maxHumidity);		
 }
+	 	
+	res.json(["OK", ""]);
+})
+
+/*
+** Handle API post for max TPH data...
+*/
+app.post('/weather/api/version', function(req, res) {
+	wctlBuildDate = req.body.buildDate;
+	wctlBuildVersion = req.body.version;
 	 	
 	res.json(["OK", ""]);
 })
