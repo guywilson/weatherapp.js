@@ -10,6 +10,9 @@ const port = process.env.PORT;
 var timestamp = '1900-01-01 00:00:00';
 
 var doSave = 'false';
+var doSaveAvg = 'false';
+var doSaveMax = 'false';
+var doSaveTotal = 'false';
 
 var avgTemperature = '0.00';
 var avgPressure = '0.00';
@@ -30,6 +33,12 @@ var chartHumiTitle = 'Humidity last 24h';
 
 var wctlBuildVersion = null;
 var wctlBuildDate = null;
+
+var avgWindspeed = null;
+var maxWindspeed = null;
+
+var avgRainfall = null;
+var totalRainfall = null;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -78,7 +87,7 @@ app.get('/weather/charts', function (req, res) {
 		chartPresTitle = 'Air Pressure last 24h';
 		chartHumiTitle = 'Humidity last 24h';
 		
-		db.getChartData_24h(function(items) {
+		db.getChartDataTPH_24h(function(items) {
 			items.forEach(function(item, index) {
 				tempReadings = tempReadings.concat(item.temperature);
 				pressureReadings = pressureReadings.concat(item.pressure);
@@ -113,7 +122,7 @@ app.get('/weather/charts', function (req, res) {
 		chartPresTitle = 'Air Pressure last 7d';
 		chartHumiTitle = 'Humidity last 7d';
 
-		db.getChartData_7d(function(items) {
+		db.getChartDataTPH_7d(function(items) {
 			items.forEach(function(item, index) {
 				tempReadings = tempReadings.concat(item.temperature);
 				pressureReadings = pressureReadings.concat(item.pressure);
@@ -148,7 +157,7 @@ app.get('/weather/charts', function (req, res) {
 		chartPresTitle = 'Air Pressure last 28d';
 		chartHumiTitle = 'Humidity last 28d';
 
-		db.getChartData_28d(function(items) {
+		db.getChartDataTPH_28d(function(items) {
 			items.forEach(function(item, index) {
 				tempReadings = tempReadings.concat(item.temperature);
 				pressureReadings = pressureReadings.concat(item.pressure);
@@ -193,7 +202,7 @@ app.post('/weather/api/avg-tph', function(req, res) {
 	//doSave = 'false';
 
 	if (doSave == 'true') {
-		db.putChartData(timestamp, 'AVG', avgTemperature, avgPressure, avgHumidity);		
+		db.putChartDataTPH(timestamp, 'AVG', avgTemperature, avgPressure, avgHumidity);		
 	}
 	 	
 	res.json(["OK", ""]);
@@ -210,7 +219,7 @@ app.post('/weather/api/min-tph', function(req, res) {
 	minHumidity = req.body.humidity;
 
 	if (doSave == 'true') {
-		db.putChartData(timestamp, 'MIN', minTemperature, minPressure, minHumidity);		
+		db.putChartDataTPH(timestamp, 'MIN', minTemperature, minPressure, minHumidity);		
 	}
 				 
 	res.json(["OK", ""]);
@@ -227,8 +236,8 @@ app.post('/weather/api/max-tph', function(req, res) {
 	maxHumidity = req.body.humidity;
 
 	if (doSave == 'true') {
-		db.putChartData(timestamp, 'MAX', maxTemperature, maxPressure, maxHumidity);		
-}
+		db.putChartDataTPH(timestamp, 'MAX', maxTemperature, maxPressure, maxHumidity);		
+	}
 	 	
 	res.json(["OK", ""]);
 })
@@ -239,6 +248,46 @@ app.post('/weather/api/max-tph', function(req, res) {
 app.post('/weather/api/version', function(req, res) {
 	wctlBuildDate = req.body.buildDate;
 	wctlBuildVersion = req.body.version;
+	 	
+	res.json(["OK", ""]);
+})
+
+/*
+** Handle API post for windspeed...
+*/
+app.post('/weather/api/wind', function(req, res) {
+	timestamp = req.body.time;
+	doSaveAvg = req.body.saveAvg;
+	doSaveMax = req.body.saveMax;
+	avgWindspeed = req.body.avgWindspeed;
+	maxWindspeed = req.body.maxWindspeed;
+
+	if (doSaveAvg == 'true') {
+		db.putChartDataWind(timestamp, 'AVG', avgWindspeed);		
+	}
+	if (doSaveMax == 'true') {
+		db.putChartDataWind(timestamp, 'MAX', maxWindspeed);		
+	}
+	 	
+	res.json(["OK", ""]);
+})
+
+/*
+** Handle API post for rainfall...
+*/
+app.post('/weather/api/rain', function(req, res) {
+	timestamp = req.body.time;
+	doSaveAvg = req.body.saveAvg;
+	doSaveTotal = req.body.saveTotal;
+	avgRainfall = req.body.avgRainfall;
+	totalRainfall = req.body.totalRainfall;
+
+	if (doSaveAvg == 'true') {
+		db.putChartDataRain(timestamp, 'AVG', avgRainfall);		
+	}
+	if (doSaveTotal == 'true') {
+		db.putChartDataRain(timestamp, 'TOT', totalRainfall);		
+	}
 	 	
 	res.json(["OK", ""]);
 })
