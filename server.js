@@ -203,7 +203,7 @@ app.post('/weather/api/avg-tph', function(req, res) {
 	/*
 	** Turn off saving when running locally...
 	*/
-	doSave = 'false';
+	//doSave = 'false';
 
 	if (doSave == 'true') {
 		db.putChartDataTPH(timestamp, 'AVG', avgTemperature, avgPressure, avgHumidity);		
