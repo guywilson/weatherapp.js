@@ -65,6 +65,10 @@ app.get('/weather', function (req, res) {
 			 	maxTemperature: maxTemperature,
 			 	maxPressure: maxPressure,
 				maxHumidity: maxHumidity,
+				avgWindspeed: avgWindspeed,
+				maxWindspeed: maxWindspeed,
+				avgRainfall: avgRainfall,
+				totalRainfall: totalRainfall,
 				buildVersion: wctlBuildVersion,
 				buildDate: wctlBuildDate
 			});
@@ -199,7 +203,7 @@ app.post('/weather/api/avg-tph', function(req, res) {
 	/*
 	** Turn off saving when running locally...
 	*/
-	//doSave = 'false';
+	doSave = 'false';
 
 	if (doSave == 'true') {
 		db.putChartDataTPH(timestamp, 'AVG', avgTemperature, avgPressure, avgHumidity);		
@@ -262,6 +266,8 @@ app.post('/weather/api/wind', function(req, res) {
 	avgWindspeed = req.body.avgWindspeed;
 	maxWindspeed = req.body.maxWindspeed;
 
+	console.log('Got wind POST...');
+
 	if (doSaveAvg == 'true') {
 		db.putChartDataWind(timestamp, 'AVG', avgWindspeed);		
 	}
@@ -281,6 +287,8 @@ app.post('/weather/api/rain', function(req, res) {
 	doSaveTotal = req.body.saveTotal;
 	avgRainfall = req.body.avgRainfall;
 	totalRainfall = req.body.totalRainfall;
+
+	console.log('Got rain POST...');
 
 	if (doSaveAvg == 'true') {
 		db.putChartDataRain(timestamp, 'AVG', avgRainfall);		

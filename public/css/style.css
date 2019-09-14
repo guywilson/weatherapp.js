@@ -62,6 +62,14 @@ body {
 	padding: 30px;
 }
 
+.version-cell {
+	border: 0px solid rgb(83, 162, 243);
+	color: black;
+	margin: 20px;
+	width: 25%;
+	padding: 30px;
+}
+
 .ghost-button {
 	background-color: transparent;
 	border: 2px solid #ddd;

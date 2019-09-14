@@ -37,7 +37,7 @@
 			</script>
 		</div>
 		<div class="centred-outer">
-			<table class="pretty-table">
+			<table id="tph_table" class="pretty-table">
 				<tr>
 					<th></th>
 					<th class="table-heading" style="text-align: center"><font size="6"><b>Min</b></font></th>
@@ -46,64 +46,111 @@
 				</tr>
 				<tr>
 					<td class="column-heading" style="text-align: left"><font size="6"><b>°C</b></font></td>
-					<td class="table-cell" style="text-align: center"><% if(minTemperature !== null){
-						%>
+					<td class="table-cell" style="text-align: center">
+						<% if(minTemperature !== null){ %>
 							<%= minTemperature %> 
 						<% } %>
 					</td>
-					<td class="table-cell" style="text-align: center"><% if(avgTemperature !== null){
-						%>
+					<td class="table-cell" style="text-align: center">
+						<% if(avgTemperature !== null){ %>
 							<font size="12"><b><%= avgTemperature %></b></font>
 						<% } %>
 					</td>
-					<td class="table-cell" style="text-align: center"><% if(maxTemperature !== null){
-						%>
+					<td class="table-cell" style="text-align: center">
+						<% if(maxTemperature !== null){ %>
 							<%= maxTemperature %> 
 						<% } %>
 					</td>
 				</tr>
 				<tr>
 					<td class="column-heading" style="text-align: left"><font size="6"><b>mBar</b></font></td>
-					<td class="table-cell" style="text-align: center"><% if(minPressure !== null){ 
-						%>
+					<td class="table-cell" style="text-align: center">
+						<% if(minPressure !== null){ %>
 							<%= minPressure %> 
 						<% } %>
 					</td>
-					<td  class="table-cell"style="text-align: center"><% if(avgPressure !== null){ 
-						%>
+					<td  class="table-cell"style="text-align: center">
+						<% if(avgPressure !== null){ %>
 							<font size="12"><b><%= avgPressure %></b></font>
 						<% } %>
 					</td>
-					<td class="table-cell" style="text-align: center"><% if(maxPressure !== null){ 
-						%>
+					<td class="table-cell" style="text-align: center">
+						<% if(maxPressure !== null){ %>
 							<%= maxPressure %> 
 						<% } %>
 					</td>
 				</tr>
 				<tr>
 					<td class="column-heading" style="text-align: left"><font size="6"><b>%RH</b></font></td>
-					<td class="table-cell" style="text-align: center"><% if(minHumidity !== null){ 
-						%>
+					<td class="table-cell" style="text-align: center">
+						<% if(minHumidity !== null){ %>
 							<%= minHumidity %> 
 						<% } %>
 					</td>
-					<td class="table-cell" style="text-align: center"><% if(avgHumidity !== null){ 
-						%>
+					<td class="table-cell" style="text-align: center">
+						<% if(avgHumidity !== null){ %>
 							<font size="12"><b><%= avgHumidity %></b></font>
 						<% } %>
 					</td>
-					<td class="table-cell" style="text-align: center"><% if(maxHumidity !== null){ 
-						%>
+					<td class="table-cell" style="text-align: center">
+						<% if(maxHumidity !== null){ %>
 							<%= maxHumidity %> 
 						<% } %>
 					</td>
 				</tr>
 			</table>
-		</div>
-		<div style="position: absolute; bottom: 5px">
-			<% if(buildVersion !== null) { %>
-				<p>Weather Controller version: <%= buildVersion %>; build date: [<%= buildDate %>]</p>
-			<% } %>
+			<p>&nbsp;</p>
+			<table id="wind_table" class="pretty-table">
+				<tr>
+					<th></th>
+					<th class="table-heading" style="text-align: center"><font size="6"><b>Now</b></font></th>
+					<th class="table-heading" style="text-align: center"><font size="6"><b>Max</b></font></th>
+				</tr>
+				<tr>
+					<td class="column-heading" style="text-align: left"><font size="6"><b>km/h</b></font></td>
+					<td class="table-cell" style="text-align: center">
+						<% if(avgWindspeed !== null){ %>
+							<font size="12"><b><%= avgWindspeed %></b></font>
+						<% } %>
+					</td>
+					<td class="table-cell" style="text-align: center">
+						<% if(maxWindspeed !== null){ %>
+							<%= maxWindspeed %>
+						<% } %>
+					</td>
+				</tr>
+			</table>
+			<p>&nbsp;</p>
+			<table id="rain_table" class="pretty-table">
+				<tr>
+					<th></th>
+					<th class="table-heading" style="text-align: center"><font size="6"><b>Now</b></font></th>
+					<th class="table-heading" style="text-align: center"><font size="6"><b>Total</b></font></th>
+				</tr>
+				<tr>
+					<td class="column-heading" style="text-align: left"><font size="6"><b>mm</b></font></td>
+					<td class="table-cell" style="text-align: center">
+						<% if(avgRainfall !== null){ %>
+							<font size="12"><b><%= avgRainfall %></b></font>
+						<% } %>
+					</td>
+					<td class="table-cell" style="text-align: center">
+						<% if(totalRainfall !== null){ %>
+							<%= totalRainfall %>
+						<% } %>
+					</td>
+				</tr>
+			</table>
+			<p>&nbsp;</p>
+			<table id="version" class="pretty-table">
+				<tr>
+					<td class="version-cell" style="text-align: left">
+						<% if(buildVersion !== null) { %>
+							<font size="4">Weather Controller version: <%= buildVersion %>; build date: [<%= buildDate %>]</font>
+						<% } %>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</body>
 </html>

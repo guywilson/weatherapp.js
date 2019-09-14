@@ -51,7 +51,7 @@ function putChartDataTPH(ts, type, temperature, pressure, humidity) {
 }
 
 function putChartDataWind(ts, type, windspeed) {
-    console.log('Inserting record');
+    console.log('Inserting windspeed record');
 
     pool.query('INSERT INTO wind (ts, type, windspeed) VALUES ($1, $2, $3)', [ts, type, windspeed], (error, results) => {
         if (error) {
@@ -62,7 +62,7 @@ function putChartDataWind(ts, type, windspeed) {
 }
 
 function putChartDataRain(ts, type, rainfall) {
-    console.log('Inserting record');
+    console.log('Inserting rainfall record');
 
     pool.query('INSERT INTO rain (ts, type, rainfall) VALUES ($1, $2, $3)', [ts, type, rainfall], (error, results) => {
         if (error) {
