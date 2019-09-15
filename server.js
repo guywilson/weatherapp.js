@@ -33,6 +33,7 @@ var chartHumiTitle = 'Humidity last 24h';
 
 var wctlBuildVersion = null;
 var wctlBuildDate = null;
+var avrVersionString = null;
 
 var avgWindspeed = null;
 var maxWindspeed = null;
@@ -69,8 +70,9 @@ app.get('/weather', function (req, res) {
 				maxWindspeed: maxWindspeed,
 				avgRainfall: avgRainfall,
 				totalRainfall: totalRainfall,
-				buildVersion: wctlBuildVersion,
-				buildDate: wctlBuildDate
+				wctlBuildVersion: wctlBuildVersion,
+				wctlBuildDate: wctlBuildDate,
+				avrVersionString: avrVersionString
 			});
 })
 
@@ -250,8 +252,9 @@ app.post('/weather/api/max-tph', function(req, res) {
 ** Handle API post for weather controller version...
 */
 app.post('/weather/api/version', function(req, res) {
-	wctlBuildDate = req.body.buildDate;
-	wctlBuildVersion = req.body.version;
+	wctlBuildDate = req.body.wctlBuildDate;
+	wctlBuildVersion = req.body.wctlVersion;
+	avrVersionString = req.body.avrVersionString;
 	 	
 	res.json(["OK", ""]);
 })
@@ -267,6 +270,11 @@ app.post('/weather/api/wind', function(req, res) {
 	maxWindspeed = req.body.maxWindspeed;
 
 	console.log('Got wind POST...');
+
+	/*
+	** Turn off saving when running locally...
+	*/
+	//doSaveAvg = 'false';
 
 	if (doSaveAvg == 'true') {
 		db.putChartDataWind(timestamp, 'AVG', avgWindspeed);		
@@ -289,6 +297,11 @@ app.post('/weather/api/rain', function(req, res) {
 	totalRainfall = req.body.totalRainfall;
 
 	console.log('Got rain POST...');
+
+	/*
+	** Turn off saving when running locally...
+	*/
+	//doSaveAvg = 'false';
 
 	if (doSaveAvg == 'true') {
 		db.putChartDataRain(timestamp, 'AVG', avgRainfall);		
