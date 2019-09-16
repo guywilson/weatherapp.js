@@ -6,6 +6,7 @@ const db = require('./db');
 const app = express();
 
 const port = process.env.PORT;
+const isDebug = process.env.WEATHERAPP_DEBUG;
 
 var timestamp = '1900-01-01 00:00:00';
 
@@ -42,11 +43,6 @@ var maxWindspeed = null;
 var avgRainfall = null;
 var totalRainfall = null;
 
-/*
-** Set to true if we're running locally...
-*/
-const isDebug = false;
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -54,6 +50,7 @@ app.set('view engine', 'ejs');
 
 app.listen(port, function () {
 	console.log('Weather app listening on port: ' + port);
+	console.log('Is debug mode on: ' + isDebug);
 })
 
 /*
@@ -212,7 +209,7 @@ app.post('/weather/api/avg-tph', function(req, res) {
 	/*
 	** Turn off saving when running locally...
 	*/
-	if (isDebug) {
+	if (isDebug == 'true') {
 		doSave = 'false';
 	}
 
@@ -233,6 +230,13 @@ app.post('/weather/api/min-tph', function(req, res) {
 	minPressure = req.body.pressure;
 	minHumidity = req.body.humidity;
 
+	/*
+	** Turn off saving when running locally...
+	*/
+	if (isDebug == 'true') {
+		doSave = 'false';
+	}
+
 	if (doSave == 'true') {
 		db.putChartDataTPH(timestamp, 'MIN', minTemperature, minPressure, minHumidity);		
 	}
@@ -250,21 +254,16 @@ app.post('/weather/api/max-tph', function(req, res) {
 	maxPressure = req.body.pressure;
 	maxHumidity = req.body.humidity;
 
+	/*
+	** Turn off saving when running locally...
+	*/
+	if (isDebug == 'true') {
+		doSave = 'false';
+	}
+
 	if (doSave == 'true') {
 		db.putChartDataTPH(timestamp, 'MAX', maxTemperature, maxPressure, maxHumidity);		
 	}
-	 	
-	res.json(["OK", ""]);
-})
-
-/*
-** Handle API post for weather controller and AVR version...
-*/
-app.post('/weather/api/version', function(req, res) {
-	wctlBuildDate = req.body.wctlBuildDate;
-	wctlBuildVersion = req.body.wctlVersion;
-	avrBuildDate = req.body.avrBuildDate;
-	avrBuildVersion = req.body.avrVersion;
 	 	
 	res.json(["OK", ""]);
 })
@@ -284,8 +283,9 @@ app.post('/weather/api/wind', function(req, res) {
 	/*
 	** Turn off saving when running locally...
 	*/
-	if (isDebug) {
+	if (isDebug == 'true') {
 		doSaveAvg = 'false';
+		doSaveMax = 'false';
 	}
 
 	if (doSaveAvg == 'true') {
@@ -313,8 +313,9 @@ app.post('/weather/api/rain', function(req, res) {
 	/*
 	** Turn off saving when running locally...
 	*/
-	if (isDebug) {
+	if (isDebug == 'true') {
 		doSaveAvg = 'false';
+		doSaveTotal = 'false';
 	}
 
 	if (doSaveAvg == 'true') {
@@ -323,6 +324,18 @@ app.post('/weather/api/rain', function(req, res) {
 	if (doSaveTotal == 'true') {
 		db.putChartDataRain(timestamp, 'TOT', totalRainfall);		
 	}
+	 	
+	res.json(["OK", ""]);
+})
+
+/*
+** Handle API post for weather controller and AVR version...
+*/
+app.post('/weather/api/version', function(req, res) {
+	wctlBuildDate = req.body.wctlBuildDate;
+	wctlBuildVersion = req.body.wctlVersion;
+	avrBuildDate = req.body.avrBuildDate;
+	avrBuildVersion = req.body.avrVersion;
 	 	
 	res.json(["OK", ""]);
 })
