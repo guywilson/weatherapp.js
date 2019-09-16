@@ -33,13 +33,19 @@ var chartHumiTitle = 'Humidity last 24h';
 
 var wctlBuildVersion = null;
 var wctlBuildDate = null;
-var avrVersionString = null;
+var avrBuildVersion = null;
+var avrBuildDate = null;
 
 var avgWindspeed = null;
 var maxWindspeed = null;
 
 var avgRainfall = null;
 var totalRainfall = null;
+
+/*
+** Set to true if we're running locally...
+*/
+const isDebug = false;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -72,7 +78,8 @@ app.get('/weather', function (req, res) {
 				totalRainfall: totalRainfall,
 				wctlBuildVersion: wctlBuildVersion,
 				wctlBuildDate: wctlBuildDate,
-				avrVersionString: avrVersionString
+				avrBuildVersion: avrBuildVersion,
+				avrBuildDate: avrBuildDate
 			});
 })
 
@@ -205,7 +212,9 @@ app.post('/weather/api/avg-tph', function(req, res) {
 	/*
 	** Turn off saving when running locally...
 	*/
-	//doSave = 'false';
+	if (isDebug) {
+		doSave = 'false';
+	}
 
 	if (doSave == 'true') {
 		db.putChartDataTPH(timestamp, 'AVG', avgTemperature, avgPressure, avgHumidity);		
@@ -249,12 +258,13 @@ app.post('/weather/api/max-tph', function(req, res) {
 })
 
 /*
-** Handle API post for weather controller version...
+** Handle API post for weather controller and AVR version...
 */
 app.post('/weather/api/version', function(req, res) {
 	wctlBuildDate = req.body.wctlBuildDate;
 	wctlBuildVersion = req.body.wctlVersion;
-	avrVersionString = req.body.avrVersionString;
+	avrBuildDate = req.body.avrBuildDate;
+	avrBuildVersion = req.body.avrVersion;
 	 	
 	res.json(["OK", ""]);
 })
@@ -274,7 +284,9 @@ app.post('/weather/api/wind', function(req, res) {
 	/*
 	** Turn off saving when running locally...
 	*/
-	//doSaveAvg = 'false';
+	if (isDebug) {
+		doSaveAvg = 'false';
+	}
 
 	if (doSaveAvg == 'true') {
 		db.putChartDataWind(timestamp, 'AVG', avgWindspeed);		
@@ -301,7 +313,9 @@ app.post('/weather/api/rain', function(req, res) {
 	/*
 	** Turn off saving when running locally...
 	*/
-	//doSaveAvg = 'false';
+	if (isDebug) {
+		doSaveAvg = 'false';
+	}
 
 	if (doSaveAvg == 'true') {
 		db.putChartDataRain(timestamp, 'AVG', avgRainfall);		
