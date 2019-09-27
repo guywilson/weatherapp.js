@@ -3,17 +3,14 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const db = require('./db');
 
-const app = express();
-
 const port = process.env.PORT;
 const isDebug = process.env.WEATHERAPP_DEBUG;
 
-var timestamp = '1900-01-01 00:00:00';
-
-var doSave = 'false';
-var doSaveAvg = 'false';
-var doSaveMax = 'false';
-var doSaveTotal = 'false';
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
 var avgTemperature = '0.00';
 var avgPressure = '0.00';
@@ -27,27 +24,20 @@ var maxTemperature = '---';
 var maxPressure = '---';
 var maxHumidity = '---';
 
-var chartXLabel = 'Previous 24h';
-var chartTempTitle = 'Temperature last 24h';
-var chartPresTitle = 'Air Pressure last 24h';
-var chartHumiTitle = 'Humidity last 24h';
-
-var wctlBuildVersion = null;
-var wctlBuildDate = null;
-var avrBuildVersion = null;
-var avrBuildDate = null;
-
 var avgWindspeed = null;
 var maxWindspeed = null;
 
 var avgRainfall = null;
 var totalRainfall = null;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
-app.set('view engine', 'ejs');
+var wctlBuildVersion = null;
+var wctlBuildDate = null;
+var avrBuildVersion = null;
+var avrBuildDate = null;
 
+/*
+** Listen for incoming requests..
+*/
 app.listen(port, function () {
 	console.log('Weather app listening on port: ' + port);
 	console.log('Is debug mode on: ' + isDebug);
@@ -84,11 +74,15 @@ app.get('/', function (req, res) {
 ** Render charts page...
 */
 app.get('/charts', function (req, res) {
+	var chartXLabel = 'Previous 24h';
+	var chartTempTitle = 'Temperature last 24h';
+	var chartPresTitle = 'Air Pressure last 24h';
+	var chartHumiTitle = 'Humidity last 24h';
 	var xLabels = [];
 	var tempReadings = [];
 	var pressureReadings = [];
 	var humidityReadings = [];
-
+	
 	if (req.query.period == '24h') {
 		xLabels = ['23', '', '', '22', '', '', '21', '', '', '20', '', '', '19', '', '', '18', '', '', '17', '', '', '16', '', '', '15', '', '', '14', '', '', '13', '', '', '12', '', '', '11', '', '', '10', '', '', '9', '', '', '8', '', '', '7', '', '', '6', '', '', '5', '', '', '4', '', '', '3', '', '', '2', '', '', '1', '', '', ''];
 
@@ -200,8 +194,8 @@ app.get('/charts', function (req, res) {
 ** Handle API post for average TPH data...
 */
 app.post('/api/avg-tph', function(req, res) {
-	timestamp = req.body.time;
-	doSave = req.body.save;
+	var timestamp = req.body.time;
+	var doSave = req.body.save;
 	avgTemperature = req.body.temperature;
 	avgPressure = req.body.pressure;
 	avgHumidity = req.body.humidity;
@@ -224,8 +218,8 @@ app.post('/api/avg-tph', function(req, res) {
 ** Handle API post for min TPH data...
 */
 app.post('/api/min-tph', function(req, res) {
-	timestamp = req.body.time;
-	doSave = req.body.save;
+	var timestamp = req.body.time;
+	var doSave = req.body.save;
 	minTemperature = req.body.temperature;
 	minPressure = req.body.pressure;
 	minHumidity = req.body.humidity;
@@ -248,8 +242,8 @@ app.post('/api/min-tph', function(req, res) {
 ** Handle API post for max TPH data...
 */
 app.post('/api/max-tph', function(req, res) {
-	timestamp = req.body.time;
-	doSave = req.body.save;
+	var timestamp = req.body.time;
+	var doSave = req.body.save;
 	maxTemperature = req.body.temperature;
 	maxPressure = req.body.pressure;
 	maxHumidity = req.body.humidity;
@@ -272,9 +266,9 @@ app.post('/api/max-tph', function(req, res) {
 ** Handle API post for windspeed...
 */
 app.post('/api/wind', function(req, res) {
-	timestamp = req.body.time;
-	doSaveAvg = req.body.saveAvg;
-	doSaveMax = req.body.saveMax;
+	var timestamp = req.body.time;
+	var doSaveAvg = req.body.saveAvg;
+	var doSaveMax = req.body.saveMax;
 	avgWindspeed = req.body.avgWindspeed;
 	maxWindspeed = req.body.maxWindspeed;
 
@@ -302,9 +296,9 @@ app.post('/api/wind', function(req, res) {
 ** Handle API post for rainfall...
 */
 app.post('/api/rain', function(req, res) {
-	timestamp = req.body.time;
-	doSaveAvg = req.body.saveAvg;
-	doSaveTotal = req.body.saveTotal;
+	var timestamp = req.body.time;
+	var doSaveAvg = req.body.saveAvg;
+	var doSaveTotal = req.body.saveTotal;
 	avgRainfall = req.body.avgRainfall;
 	totalRainfall = req.body.totalRainfall;
 
