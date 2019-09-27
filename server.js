@@ -189,7 +189,7 @@ app.get('/charts', function (req, res) {
 		});
 	}
 	else {
-		var errorText = 'Please do not try that again Grzegorz! :)';
+		var errorText = 'Resource not found on this server "' + req.url + '"';
 		res.render('error', {
 			errorText: errorText
 		});
@@ -278,8 +278,6 @@ app.post('/api/wind', function(req, res) {
 	avgWindspeed = req.body.avgWindspeed;
 	maxWindspeed = req.body.maxWindspeed;
 
-	console.log('Got wind POST...');
-
 	/*
 	** Turn off saving when running locally...
 	*/
@@ -307,8 +305,6 @@ app.post('/api/rain', function(req, res) {
 	var doSaveTotal = req.body.saveTotal;
 	avgRainfall = req.body.avgRainfall;
 	totalRainfall = req.body.totalRainfall;
-
-	console.log('Got rain POST...');
 
 	/*
 	** Turn off saving when running locally...
@@ -338,4 +334,15 @@ app.post('/api/version', function(req, res) {
 	avrBuildVersion = req.body.avrVersion;
 	 	
 	res.json(["OK", ""]);
+})
+
+/*
+** Handle page not found errors...
+*/
+app.all('*', function(req, res) {
+	var errorText = 'Resource not found on this server "' + req.url + '"';
+	
+	res.render('error', {
+		errorText: errorText
+	});
 })
