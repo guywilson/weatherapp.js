@@ -188,6 +188,12 @@ app.get('/charts', function (req, res) {
 			});
 		});
 	}
+	else {
+		var errorText = 'Please do not try that again Grzegorz! :)';
+		res.render('error', {
+			errorText: errorText
+		});
+	}
 })
 
 /*
