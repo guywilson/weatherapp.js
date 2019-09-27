@@ -56,7 +56,7 @@ app.listen(port, function () {
 /*
 ** Render landing page...
 */
-app.get('/weather', function (req, res) {
+app.get('/', function (req, res) {
 	res.render(
 			'index', 
 			{
@@ -83,7 +83,7 @@ app.get('/weather', function (req, res) {
 /*
 ** Render charts page...
 */
-app.get('/weather/charts', function (req, res) {
+app.get('/charts', function (req, res) {
 	var xLabels = [];
 	var tempReadings = [];
 	var pressureReadings = [];
@@ -199,7 +199,7 @@ app.get('/weather/charts', function (req, res) {
 /*
 ** Handle API post for average TPH data...
 */
-app.post('/weather/api/avg-tph', function(req, res) {
+app.post('/api/avg-tph', function(req, res) {
 	timestamp = req.body.time;
 	doSave = req.body.save;
 	avgTemperature = req.body.temperature;
@@ -223,7 +223,7 @@ app.post('/weather/api/avg-tph', function(req, res) {
 /*
 ** Handle API post for min TPH data...
 */
-app.post('/weather/api/min-tph', function(req, res) {
+app.post('/api/min-tph', function(req, res) {
 	timestamp = req.body.time;
 	doSave = req.body.save;
 	minTemperature = req.body.temperature;
@@ -247,7 +247,7 @@ app.post('/weather/api/min-tph', function(req, res) {
 /*
 ** Handle API post for max TPH data...
 */
-app.post('/weather/api/max-tph', function(req, res) {
+app.post('/api/max-tph', function(req, res) {
 	timestamp = req.body.time;
 	doSave = req.body.save;
 	maxTemperature = req.body.temperature;
@@ -271,7 +271,7 @@ app.post('/weather/api/max-tph', function(req, res) {
 /*
 ** Handle API post for windspeed...
 */
-app.post('/weather/api/wind', function(req, res) {
+app.post('/api/wind', function(req, res) {
 	timestamp = req.body.time;
 	doSaveAvg = req.body.saveAvg;
 	doSaveMax = req.body.saveMax;
@@ -301,7 +301,7 @@ app.post('/weather/api/wind', function(req, res) {
 /*
 ** Handle API post for rainfall...
 */
-app.post('/weather/api/rain', function(req, res) {
+app.post('/api/rain', function(req, res) {
 	timestamp = req.body.time;
 	doSaveAvg = req.body.saveAvg;
 	doSaveTotal = req.body.saveTotal;
@@ -331,7 +331,7 @@ app.post('/weather/api/rain', function(req, res) {
 /*
 ** Handle API post for weather controller and AVR version...
 */
-app.post('/weather/api/version', function(req, res) {
+app.post('/api/version', function(req, res) {
 	wctlBuildDate = req.body.wctlBuildDate;
 	wctlBuildVersion = req.body.wctlVersion;
 	avrBuildDate = req.body.avrBuildDate;
