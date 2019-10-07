@@ -24,16 +24,11 @@ var maxTemperature = '---';
 var maxPressure = '---';
 var maxHumidity = '---';
 
-var avgWindspeed = null;
-var maxWindspeed = null;
+var avgWindspeed = '0.00';
+var maxWindspeed = '---';
 
-var avgRainfall = null;
-var totalRainfall = null;
-
-var wctlBuildVersion = null;
-var wctlBuildDate = null;
-var avrBuildVersion = null;
-var avrBuildDate = null;
+var avgRainfall = '0.00';
+var totalRainfall = '---';
 
 /*
 ** Listen for incoming requests..
@@ -62,11 +57,7 @@ app.get('/', function (req, res) {
 				avgWindspeed: avgWindspeed,
 				maxWindspeed: maxWindspeed,
 				avgRainfall: avgRainfall,
-				totalRainfall: totalRainfall,
-				wctlBuildVersion: wctlBuildVersion,
-				wctlBuildDate: wctlBuildDate,
-				avrBuildVersion: avrBuildVersion,
-				avrBuildDate: avrBuildDate
+				totalRainfall: totalRainfall
 			});
 })
 
@@ -320,18 +311,6 @@ app.post('/api/rain', function(req, res) {
 	if (doSaveTotal == 'true') {
 		db.putChartDataRain(timestamp, 'TOT', totalRainfall);		
 	}
-	 	
-	res.json(["OK", ""]);
-})
-
-/*
-** Handle API post for weather controller and AVR version...
-*/
-app.post('/api/version', function(req, res) {
-	wctlBuildDate = req.body.wctlBuildDate;
-	wctlBuildVersion = req.body.wctlVersion;
-	avrBuildDate = req.body.avrBuildDate;
-	avrBuildVersion = req.body.avrVersion;
 	 	
 	res.json(["OK", ""]);
 })
