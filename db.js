@@ -3,8 +3,19 @@ const Postgres = require('pg');
 const Pool = Postgres.Pool;
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: true
+    ssl: process.env.DB_SSL === 'true'
   });
+  
+function getUserByEmail(email, callback) {
+    pool.query('SELECT * FROM users WHERE email = $1', [email], (error, results) => {
+        if (error) {
+            console.log("Error querying email");
+            throw error;
+        }
+
+        return callback(results.rows);
+    });
+}
   
 function getChartDataTPH_24h(callback) {
     pool.query('SELECT * FROM tph WHERE type = \'AVG\' ORDER BY ts DESC LIMIT 72', (error, results) => {
@@ -73,6 +84,7 @@ function putChartDataRain(ts, type, rainfall) {
 }
 
 module.exports = {
+    getUserByEmail,
     getChartDataTPH_24h,
     getChartDataTPH_7d,
     getChartDataTPH_28d,
