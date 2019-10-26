@@ -208,17 +208,6 @@ app.post('/api/avg-tph', function(req, res) {
 	currentTPH.pressure = req.body.pressure;
 	currentTPH.humidity = req.body.humidity;
 
-	/*
-	** Turn off saving when running locally...
-	*/
-	if (isDebug == 'true') {
-		doSave = 'false';
-	}
-
-	if (doSave == 'true') {
-		db.putChartDataTPH(timestamp, 'AVG', avgTemperature, avgPressure, avgHumidity);		
-	}
-	 	
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
@@ -232,7 +221,9 @@ app.post('/api/avg-tph', function(req, res) {
         }
 
         if (doSave == 'true') {
-            db.putChartDataTPH(timestamp, 'AVG', avgTemperature, avgPressure, avgHumidity);		
+            console.log('Saving TPH record...');
+        
+            db.putChartDataTPH(timestamp, 'AVG', currentTPH.temperature, currentTPH.pressure, currentTPH.humidity);		
         }
       
         res.status(200).send({ auth: true, status: "OK" });
@@ -269,7 +260,7 @@ app.post('/api/min-tph', function(req, res) {
         }
 
         if (doSave == 'true') {
-            db.putChartDataTPH(timestamp, 'MIN', minTemperature, minPressure, minHumidity);		
+            db.putChartDataTPH(timestamp, 'MIN', minimumTPH.temperature, minimumTPH.pressure, minimumTPH.humidity);		
         }
       
         res.status(200).send({ auth: true, status: "OK" });
@@ -306,7 +297,7 @@ app.post('/api/max-tph', function(req, res) {
         }
 
         if (doSave == 'true') {
-            db.putChartDataTPH(timestamp, 'MAX', maxTemperature, maxPressure, maxHumidity);		
+            db.putChartDataTPH(timestamp, 'MAX', maximumTPH.temperature, maximumTPH.pressure, maximumTPH.humidity);		
         }
       
         res.status(200).send({ auth: true, status: "OK" });
@@ -344,10 +335,10 @@ app.post('/api/wind', function(req, res) {
         }
 
         if (doSaveAvg == 'true') {
-            db.putChartDataWind(timestamp, 'AVG', avgWindspeed);		
+            db.putChartDataWind(timestamp, 'AVG', anemometer.averageWindspeed);		
         }
         if (doSaveMax == 'true') {
-            db.putChartDataWind(timestamp, 'MAX', maxWindspeed);		
+            db.putChartDataWind(timestamp, 'MAX', anemometer.maximumWindspeed);		
         }
       
         res.status(200).send({ auth: true, status: "OK" });
@@ -385,10 +376,10 @@ app.post('/api/rain', function(req, res) {
         }
 
         if (doSaveAvg == 'true') {
-            db.putChartDataRain(timestamp, 'AVG', avgRainfall);		
+            db.putChartDataRain(timestamp, 'AVG', rainguage.averageRainfall);		
         }
         if (doSaveTotal == 'true') {
-            db.putChartDataRain(timestamp, 'TOT', totalRainfall);		
+            db.putChartDataRain(timestamp, 'TOT', rainguage.totalRainfall);		
         }
       
         res.status(200).send({ auth: true, status: "OK" });
