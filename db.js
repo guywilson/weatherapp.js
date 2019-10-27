@@ -51,7 +51,7 @@ function getChartDataTPH_28d(callback) {
 }
 
 function putChartDataTPH(ts, type, temperature, pressure, humidity) {
-    console.log('Inserting record');
+    console.log('Inserting TPH record');
 
     pool.query('INSERT INTO tph (ts, type, temperature, pressure, humidity) VALUES ($1, $2, $3, $4, $5)', [ts, type, temperature, pressure, humidity], (error, results) => {
         if (error) {

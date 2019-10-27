@@ -221,8 +221,6 @@ app.post('/api/avg-tph', function(req, res) {
         }
 
         if (doSave == 'true') {
-            console.log('Saving TPH record...');
-        
             db.putChartDataTPH(timestamp, 'AVG', currentTPH.temperature, currentTPH.pressure, currentTPH.humidity);		
         }
       
