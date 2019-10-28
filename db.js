@@ -5,7 +5,7 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.DB_SSL === 'true'
   });
-  
+
 function getUserByEmail(email, callback) {
     pool.query('SELECT * FROM users WHERE email = $1', [email], (error, results) => {
         if (error) {
@@ -83,6 +83,94 @@ function putChartDataRain(ts, type, rainfall) {
     });
 }
 
+function getISODateStr(dt) {
+    var dtStr = dt.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+    });
+
+    var parts = dtStr.split('/');
+
+    var isoDateStr = parts[2] + "-" + parts[1] + "-" + parts[0];
+
+    return isoDateStr;
+}
+
+function cleanupData() {
+    console.log('Cleaning up data');
+
+    var now = new Date();
+    var nowStr = getISODateStr(now);
+
+    var days_ago_28 = new Date();
+    days_ago_28.setDate(now.getDate() - 28);
+    var days_ago_28Str = getISODateStr(days_ago_28);
+    
+    var days_ago_7 = new Date();
+    days_ago_7.setDate(now.getDate() - 7);
+    var days_ago_7Str = getISODateStr(days_ago_7);
+    
+    console.log('Now: ' + nowStr + ', 7 days ago: ' + days_ago_7Str + ', 28 days ago: ' + days_ago_28Str);
+
+    pool.query('DELETE FROM tph WHERE ts < $1::date', [days_ago_28Str], (error, results) => {
+        if (error) {
+            console.log("Error deleting TPH data");
+            throw error;
+        }
+    });
+    pool.query('DELETE FROM tph WHERE type = \'AVG\' AND ts < $1::date AND (EXTRACT (\'hour\' FROM ts) NOT IN (0, 6, 12, 18) OR EXTRACT (\'minute\' FROM ts) > 19)', [nowStr], (error, results) => {
+        if (error) {
+            console.log("Error deleting TPH data");
+            throw error;
+        }
+    });
+    pool.query('DELETE FROM tph WHERE type = \'AVG\' AND ts < $1::date AND (EXTRACT (\'hour\' FROM ts) NOT IN (12) OR EXTRACT (\'minute\' FROM ts) > 19)', [days_ago_7Str], (error, results) => {
+        if (error) {
+            console.log("Error deleting TPH data");
+            throw error;
+        }
+    });
+
+    pool.query('DELETE FROM wind WHERE ts < $1::date', [days_ago_28Str], (error, results) => {
+        if (error) {
+            console.log("Error deleting wind data");
+            throw error;
+        }
+    });
+    pool.query('DELETE FROM wind WHERE type = \'AVG\' AND ts < $1::date AND (EXTRACT (\'hour\' FROM ts) NOT IN (0, 6, 12, 18) OR EXTRACT (\'minute\' FROM ts) > 19)', [nowStr], (error, results) => {
+        if (error) {
+            console.log("Error deleting wind data");
+            throw error;
+        }
+    });
+    pool.query('DELETE FROM wind WHERE type = \'AVG\' AND ts < $1::date AND (EXTRACT (\'hour\' FROM ts) NOT IN (12) OR EXTRACT (\'minute\' FROM ts) > 19)', [days_ago_7Str], (error, results) => {
+        if (error) {
+            console.log("Error deleting wind data");
+            throw error;
+        }
+    });
+
+    pool.query('DELETE FROM rain WHERE ts < $1::date', [days_ago_28Str], (error, results) => {
+        if (error) {
+            console.log("Error deleting rain data");
+            throw error;
+        }
+    });
+    pool.query('DELETE FROM rain WHERE type = \'AVG\' AND ts < $1::date AND (EXTRACT (\'hour\' FROM ts) NOT IN (0, 6, 12, 18) OR EXTRACT (\'minute\' FROM ts) > 19)', [nowStr], (error, results) => {
+        if (error) {
+            console.log("Error deleting rain data");
+            throw error;
+        }
+    });
+    pool.query('DELETE FROM rain WHERE type = \'AVG\' AND ts < $1::date AND (EXTRACT (\'hour\' FROM ts) NOT IN (12) OR EXTRACT (\'minute\' FROM ts) > 19)', [days_ago_7Str], (error, results) => {
+        if (error) {
+            console.log("Error deleting rain data");
+            throw error;
+        }
+    });
+}
+
 module.exports = {
     getUserByEmail,
     getChartDataTPH_24h,
@@ -90,5 +178,6 @@ module.exports = {
     getChartDataTPH_28d,
     putChartDataTPH,
     putChartDataWind,
-    putChartDataRain
+    putChartDataRain,
+    cleanupData
 }
