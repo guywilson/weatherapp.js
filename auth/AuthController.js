@@ -28,7 +28,7 @@ router.post('/login', function(req, res) {
         }
 
         var token = jwt.sign({ id: item.id }, process.env.SECRET, {
-            expiresIn: 21600        // Token expires every 6 hours...
+            expiresIn: process.env.TOKEN_EXPIRY_SECONDS
         });
 
         console.log('Successfully authenticated user: ' + req.body.email);
