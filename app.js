@@ -14,10 +14,11 @@ app.use('/api/auth', AuthController);
 app.set('view engine', 'ejs');
 
 class tph {
-    constructor(t, p, h) {
+    constructor(t, p, h, d) {
         this.temperature = t;
         this.pressure = p;
-        this.humidity = h;
+		this.humidity = h;
+		this.dewpoint = d;
     }
 }
 
@@ -35,9 +36,9 @@ class rain {
     }
 }
 
-currentTPH = new tph('0.00', '0.00', '0.00');
-minimumTPH = new tph('---', '---', '---');
-maximumTPH = new tph('---', '---', '---');
+currentTPH = new tph('0.00', '0.00', '0.00', '0.00');
+minimumTPH = new tph('---', '---', '---', '---');
+maximumTPH = new tph('---', '---', '---', '---');
 
 anemometer = new wind('0.00', '---');
 rainguage = new rain('0.00', '---');
@@ -207,6 +208,7 @@ app.post('/api/avg-tph', function(req, res) {
     currentTPH.temperature = req.body.temperature;
 	currentTPH.pressure = req.body.pressure;
 	currentTPH.humidity = req.body.humidity;
+	currentTPH.dewpoint = req.body.dewpoint;
 
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
