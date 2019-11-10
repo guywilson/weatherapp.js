@@ -52,7 +52,8 @@ app.get('/', function (req, res) {
 			{
 				avgTemperature: currentTPH.temperature, 
 			 	avgPressure: currentTPH.pressure, 
-			 	avgHumidity: currentTPH.humidity,
+				avgHumidity: currentTPH.humidity,
+				dewPoint: currentTPH.dewpoint,
 			 	minTemperature: minimumTPH.temperature,
 			 	minPressure: minimumTPH.pressure,
 			 	minHumidity: minimumTPH.humidity,

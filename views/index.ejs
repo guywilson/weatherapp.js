@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300">
 	</head>
 	<body>
-		<h1 style="text-align: center">Current Weather</h1>
+		<h1 style="text-align: center">Current Weather (Greenwich, London, UK)</h1>
 		<div class="centred-outer">
 			<div class="centred-inner">
 			<p class="pretty-frame" style="line-height: 1.5">
@@ -60,6 +60,18 @@
 						<% if(maxTemperature !== null){ %>
 							<%= maxTemperature %> 
 						<% } %>
+					</td>
+				</tr>
+				<tr>
+					<td class="column-heading" style="text-align: left"><font size="2"><b>Dew Point °C</b></font></td>
+					<td class="table-cell" style="text-align: center">
+					</td>
+					<td class="table-cell" style="text-align: center">
+						<% if(dewPoint !== null){ %>
+							<font size="12"><b><%= dewPoint %></b></font>
+						<% } %>
+					</td>
+					<td class="table-cell" style="text-align: center">
 					</td>
 				</tr>
 				<tr>
