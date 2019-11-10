@@ -16,7 +16,7 @@ router.post('/login', function(req, res) {
     db.getUserByEmail(req.body.email, function(items) {
         if (items.length == 0) {
             console.log('Error - no user found');
-            return res.status(404).send('Error - No user found.');
+            return res.status(404).send({ auth: false, token: null });
         }
 
         var item = items[0];
