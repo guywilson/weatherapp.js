@@ -36,6 +36,8 @@ class rain {
     }
 }
 
+var ipAddress = '';
+
 currentTPH = new tph('0.00', '0.00', '0.00', '0.00');
 minimumTPH = new tph('---', '---', '---', '---');
 maximumTPH = new tph('---', '---', '---', '---');
@@ -191,6 +193,17 @@ app.get('/charts', function (req, res) {
 			errorText: errorText
 		});
 	}
+})
+
+/*
+** Render ip address page...
+*/
+app.get('/ip/ipaddr', function (req, res) {
+	res.render(
+			'ipaddr', 
+			{
+				ipAddress: ipAddress 
+			});
 })
 
 /*
@@ -403,6 +416,29 @@ app.post('/api/cleanup', function(req, res) {
         }
 
         db.cleanupData();		
+      
+        res.status(200).send({ auth: true, status: "OK" });
+    });
+})
+
+/*
+** Handle API post for ip address...
+*/
+app.post('/api/ipaddr', function(req, res) {
+    var token = req.headers['x-access-token'];
+
+    if (!token) {
+        return res.status(401).send({ auth: false, message: 'No token provided.' });
+    }
+
+    jwt.verify(token, process.env.SECRET, function(err, decoded) {
+        if (err) {
+            return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+        }
+
+        ipAddress = req.body.address;
+        
+        console.log('Got IP address: ' + ipAddress);
       
         res.status(200).send({ auth: true, status: "OK" });
     });
