@@ -216,18 +216,18 @@ app.post('/api/avg-tph', function(req, res) {
         return res.status(401).send({ auth: false, message: 'No token provided.' });
     }
 
-    var timestamp = req.body.time;
-    var doSave = req.body.save;
-
-    currentTPH.temperature = req.body.temperature;
-	currentTPH.pressure = req.body.pressure;
-	currentTPH.humidity = req.body.humidity;
-	currentTPH.dewpoint = req.body.dewpoint;
-
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         }
+
+		var timestamp = req.body.time;
+		var doSave = req.body.save;
+	
+		currentTPH.temperature = req.body.temperature;
+		currentTPH.pressure = req.body.pressure;
+		currentTPH.humidity = req.body.humidity;
+		currentTPH.dewpoint = req.body.dewpoint;
 
         /*
         ** Turn off saving when running locally...
@@ -235,7 +235,7 @@ app.post('/api/avg-tph', function(req, res) {
         if (isDebug == 'true') {
             doSave = 'false';
         }
-
+	
         if (doSave == 'true') {
             db.putChartDataTPH(timestamp, 'AVG', currentTPH.temperature, currentTPH.pressure, currentTPH.humidity);		
         }
@@ -253,18 +253,18 @@ app.post('/api/min-tph', function(req, res) {
     if (!token) {
         return res.status(401).send({ auth: false, message: 'No token provided.' });
     }
-
-	var timestamp = req.body.time;
-	var doSave = req.body.save;
-    
-    minimumTPH.temperature = req.body.temperature;
-	minimumTPH.pressure = req.body.pressure;
-	minimumTPH.humidity = req.body.humidity;
 	 	
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         }
+
+		var timestamp = req.body.time;
+		var doSave = req.body.save;
+		
+		minimumTPH.temperature = req.body.temperature;
+		minimumTPH.pressure = req.body.pressure;
+		minimumTPH.humidity = req.body.humidity;
 
         /*
         ** Turn off saving when running locally...
@@ -272,7 +272,7 @@ app.post('/api/min-tph', function(req, res) {
         if (isDebug == 'true') {
             doSave = 'false';
         }
-
+	
         if (doSave == 'true') {
             db.putChartDataTPH(timestamp, 'MIN', minimumTPH.temperature, minimumTPH.pressure, minimumTPH.humidity);		
         }
@@ -290,18 +290,18 @@ app.post('/api/max-tph', function(req, res) {
     if (!token) {
         return res.status(401).send({ auth: false, message: 'No token provided.' });
     }
-
-	var timestamp = req.body.time;
-	var doSave = req.body.save;
-    
-    maximumTPH.temperature = req.body.temperature;
-	maximumTPH.pressure = req.body.pressure;
-	maximumTPH.humidity = req.body.humidity;
 	 	
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         }
+
+		var timestamp = req.body.time;
+		var doSave = req.body.save;
+		
+		maximumTPH.temperature = req.body.temperature;
+		maximumTPH.pressure = req.body.pressure;
+		maximumTPH.humidity = req.body.humidity;
 
         /*
         ** Turn off saving when running locally...
@@ -309,7 +309,7 @@ app.post('/api/max-tph', function(req, res) {
         if (isDebug == 'true') {
             doSave = 'false';
         }
-
+	
         if (doSave == 'true') {
             db.putChartDataTPH(timestamp, 'MAX', maximumTPH.temperature, maximumTPH.pressure, maximumTPH.humidity);		
         }
@@ -327,18 +327,18 @@ app.post('/api/wind', function(req, res) {
     if (!token) {
         return res.status(401).send({ auth: false, message: 'No token provided.' });
     }
-
-	var timestamp = req.body.time;
-	var doSaveAvg = req.body.saveAvg;
-    var doSaveMax = req.body.saveMax;
-    
-	anemometer.averageWindspeed = req.body.avgWindspeed;
-	anemometer.maximumWindspeed = req.body.maxWindspeed;
 	 	
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         }
+
+		var timestamp = req.body.time;
+		var doSaveAvg = req.body.saveAvg;
+		var doSaveMax = req.body.saveMax;
+		
+		anemometer.averageWindspeed = req.body.avgWindspeed;
+		anemometer.maximumWindspeed = req.body.maxWindspeed;
 
         /*
         ** Turn off saving when running locally...
@@ -347,7 +347,7 @@ app.post('/api/wind', function(req, res) {
             doSaveAvg = 'false';
             doSaveMax = 'false';
         }
-
+	
         if (doSaveAvg == 'true') {
             db.putChartDataWind(timestamp, 'AVG', anemometer.averageWindspeed);		
         }
@@ -368,19 +368,19 @@ app.post('/api/rain', function(req, res) {
     if (!token) {
         return res.status(401).send({ auth: false, message: 'No token provided.' });
     }
-
-	var timestamp = req.body.time;
-	var doSaveAvg = req.body.saveAvg;
-	var doSaveTotal = req.body.saveTotal;
-    
-	rainguage.averageRainfall = req.body.avgRainfall;
-	rainguage.totalRainfall = req.body.totalRainfall;
 	 	
     jwt.verify(token, process.env.SECRET, function(err, decoded) {
         if (err) {
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
         }
 
+		var timestamp = req.body.time;
+		var doSaveAvg = req.body.saveAvg;
+		var doSaveTotal = req.body.saveTotal;
+		
+		rainguage.averageRainfall = req.body.avgRainfall;
+		rainguage.totalRainfall = req.body.totalRainfall;
+	
         /*
         ** Turn off saving when running locally...
         */
