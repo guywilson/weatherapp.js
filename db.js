@@ -107,19 +107,18 @@ function cleanupData() {
     console.log('Cleaning up data');
 
     var now = new Date();
-    now.setDate(now.getDate() - 10);
 
     var hours_ago_24 = new Date();
     hours_ago_24.setDate(now.getDate() - 1);
     var hours_ago_24Str = getISODateStr(hours_ago_24);
-
-    var days_ago_28 = new Date();
-    days_ago_28.setDate(now.getDate() - 28);
-    var days_ago_28Str = getISODateStr(days_ago_28);
     
     var days_ago_7 = new Date();
     days_ago_7.setDate(now.getDate() - 7);
     var days_ago_7Str = getISODateStr(days_ago_7);
+
+    var days_ago_28 = new Date();
+    days_ago_28.setDate(now.getDate() - 28);
+    var days_ago_28Str = getISODateStr(days_ago_28);
     
     console.log('24 hours ago: ' + hours_ago_24Str + ', 7 days ago: ' + days_ago_7Str + ', 28 days ago: ' + days_ago_28Str);
     
