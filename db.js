@@ -83,22 +83,22 @@ function putChartDataRain(ts, type, rainfall) {
     });
 }
 
-function getISODateStr(dt) {
-    var dtStr = dt.toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric'
-    });
+function get2DigitNumber(n) {
+    return n > 9 ? "" + n: "0" + n;
+}
 
+function getISODateStr(dt) {
     var tmStr = dt.toLocaleTimeString(undefined, {
         hours: '2-digit',
         minutes: '2-digit',
         seconds: '2-digit'
     });
 
-    var dateParts = dtStr.split('/');
+    var year = dt.getFullYear();
+    var month = get2DigitNumber(dt.getMonth() + 1);
+    var day = get2DigitNumber(dt.getDate());
 
-    var isoDateStr = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0] + " " + tmStr;
+    var isoDateStr = year + "-" + month + "-" + day + " " + tmStr;
 
     return isoDateStr;
 }
