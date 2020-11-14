@@ -132,18 +132,9 @@ function cleanupData() {
         }
     });
     /*
-    ** Delete all AVG rows after 7 days ago and (hour is not 12 or (hour is 12 and minute is > 19)
+    ** Delete all AVG rows after 24 hours ago and (hour is not (12) or (hour is (12) and minute is > 19)
     */
-    pool.query('DELETE FROM tph WHERE type = \'AVG\' AND ts < $1::timestamp AND (EXTRACT (\'hour\' FROM ts) NOT IN (12) OR (EXTRACT (\'hour\' FROM ts) IN (12) AND EXTRACT (\'minute\' FROM ts) > 19))', [days_ago_7Str], (error, results) => {
-        if (error) {
-            console.log("Error deleting TPH data");
-            throw error;
-        }
-    });
-    /*
-    ** Delete all AVG rows after 24 hours ago and (hour is not (0, 6, 12 or 18) or (hour is (0, 6, 12 or 18) and minute is > 19)
-    */
-    pool.query('DELETE FROM tph WHERE type = \'AVG\' AND ts < $1::timestamp AND (EXTRACT (\'hour\' FROM ts) NOT IN (0, 6, 12, 18) OR (EXTRACT (\'hour\' FROM ts) IN (0, 6, 12, 18) AND EXTRACT (\'minute\' FROM ts) > 19))', [hours_ago_24Str], (error, results) => {
+    pool.query('DELETE FROM tph WHERE type = \'AVG\' AND ts < $1::timestamp AND (EXTRACT (\'hour\' FROM ts) NOT IN (12) OR (EXTRACT (\'hour\' FROM ts) IN (12) AND EXTRACT (\'minute\' FROM ts) > 19))', [hours_ago_24Str], (error, results) => {
         if (error) {
             console.log("Error deleting TPH data");
             throw error;
@@ -160,18 +151,9 @@ function cleanupData() {
         }
     });
     /*
-    ** Delete all AVG rows after 7 days ago and (hour is not 12 or (hour is 12 and minute is > 19)
-    */
-    pool.query('DELETE FROM wind WHERE type = \'AVG\' AND ts < $1::timestamp AND (EXTRACT (\'hour\' FROM ts) NOT IN (12) OR (EXTRACT (\'hour\' FROM ts) IN (12) AND EXTRACT (\'minute\' FROM ts) > 19))', [days_ago_7Str], (error, results) => {
-        if (error) {
-            console.log("Error deleting TPH data");
-            throw error;
-        }
-    });
-    /*
     ** Delete all AVG rows after 24 hours ago and (hour is not (0, 6, 12 or 18) or (hour is (0, 6, 12 or 18) and minute is > 19)
     */
-    pool.query('DELETE FROM wind WHERE type = \'AVG\' AND ts < $1::timestamp AND (EXTRACT (\'hour\' FROM ts) NOT IN (0, 6, 12, 18) OR (EXTRACT (\'hour\' FROM ts) IN (0, 6, 12, 18) AND EXTRACT (\'minute\' FROM ts) > 19))', [hours_ago_24Str], (error, results) => {
+    pool.query('DELETE FROM wind WHERE type = \'AVG\' AND ts < $1::timestamp AND (EXTRACT (\'hour\' FROM ts) NOT IN (12) OR (EXTRACT (\'hour\' FROM ts) IN (12) AND EXTRACT (\'minute\' FROM ts) > 19))', [hours_ago_24Str], (error, results) => {
         if (error) {
             console.log("Error deleting TPH data");
             throw error;
@@ -188,18 +170,9 @@ function cleanupData() {
         }
     });
     /*
-    ** Delete all AVG rows after 7 days ago and (hour is not 12 or (hour is 12 and minute is > 19)
-    */
-    pool.query('DELETE FROM rain WHERE type = \'AVG\' AND ts < $1::timestamp AND (EXTRACT (\'hour\' FROM ts) NOT IN (12) OR (EXTRACT (\'hour\' FROM ts) IN (12) AND EXTRACT (\'minute\' FROM ts) > 19))', [days_ago_7Str], (error, results) => {
-        if (error) {
-            console.log("Error deleting TPH data");
-            throw error;
-        }
-    });
-    /*
     ** Delete all AVG rows after 24 hours ago and (hour is not (0, 6, 12 or 18) or (hour is (0, 6, 12 or 18) and minute is > 19)
     */
-    pool.query('DELETE FROM rain WHERE type = \'AVG\' AND ts < $1::timestamp AND (EXTRACT (\'hour\' FROM ts) NOT IN (0, 6, 12, 18) OR (EXTRACT (\'hour\' FROM ts) IN (0, 6, 12, 18) AND EXTRACT (\'minute\' FROM ts) > 19))', [hours_ago_24Str], (error, results) => {
+    pool.query('DELETE FROM rain WHERE type = \'AVG\' AND ts < $1::timestamp AND (EXTRACT (\'hour\' FROM ts) NOT IN (12) OR (EXTRACT (\'hour\' FROM ts) IN (12) AND EXTRACT (\'minute\' FROM ts) > 19))', [hours_ago_24Str], (error, results) => {
         if (error) {
             console.log("Error deleting TPH data");
             throw error;
