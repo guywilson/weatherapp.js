@@ -29,7 +29,7 @@ function getChartDataTPH_24h(callback) {
 }
 
 function getChartDataTPH_7d(callback) {
-    pool.query('SELECT * FROM tph WHERE type = \'AVG\' AND EXTRACT (\'hour\' from ts) = 12 AND EXTRACT (\'minute\' from ts) BETWEEN 0 AND 19 ORDER BY ts DESC LIMIT 7', (error, results) => {
+    pool.query('SELECT * FROM tph WHERE type = \'AVG\' AND EXTRACT (\'hour\' from ts) = 12 ORDER BY ts DESC LIMIT 7', (error, results) => {
         if (error) {
             console.log("Error selecting chart data");
             throw error;
