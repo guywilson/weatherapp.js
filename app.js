@@ -196,17 +196,6 @@ app.get('/charts', function (req, res) {
 })
 
 /*
-** Render ip address page...
-*/
-app.get('/ip/ipaddr', function (req, res) {
-	res.render(
-			'ipaddr', 
-			{
-				ipAddress: ipAddress 
-			});
-})
-
-/*
 ** Handle API post for average TPH data...
 */
 app.post('/api/avg-tph', function(req, res) {
