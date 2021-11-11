@@ -411,29 +411,6 @@ app.post('/api/cleanup', function(req, res) {
 })
 
 /*
-** Handle API post for ip address...
-*/
-app.post('/api/ipaddr', function(req, res) {
-    var token = req.headers['x-access-token'];
-
-    if (!token) {
-        return res.status(401).send({ auth: false, message: 'No token provided.' });
-    }
-
-    jwt.verify(token, process.env.SECRET, function(err, decoded) {
-        if (err) {
-            return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-        }
-
-        ipAddress = req.body.address;
-        
-        console.log('Got IP address: ' + ipAddress);
-      
-        res.status(200).send({ auth: true, status: "OK" });
-    });
-})
-
-/*
 ** Handle page not found errors...
 */
 app.all('*', function(req, res) {
